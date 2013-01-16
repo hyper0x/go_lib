@@ -1,4 +1,4 @@
-package lib
+package go_lib
 
 import (
 	"sync"

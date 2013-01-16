@@ -1,4 +1,4 @@
-package utils
+package go_lib
 
 import (
 	"encoding/json"
