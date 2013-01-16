@@ -6,42 +6,47 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime/debug"
 	"strings"
 )
 
 type Config struct {
-	Dict map[string]string
+	Path         string
+	Dict         map[string]string
+	sign         *Sign
+	loadingCount int
 }
 
-var myConfig Config
-var loadingCount = 0
-var loadingChan = make(chan int)
-
-func init() {
-	go func() {
-	L:
-		for {
-			select {
-			case incr, ready := <-loadingChan:
-				if !ready {
-					break L
-				}
-				loadingCount += incr
-			}
-		}
-	}()
-}
-
-func ReadConfig(fresh bool) (Config, error) {
-	needLoad := fresh || (loadingCount == 0)
-	if !needLoad {
-		return myConfig, nil
+func (self *Config) ReadConfig(fresh bool) error {
+	if self.sign == nil {
+		self.sign = NewSign()
 	}
-
-	myConfig = *new(Config)
-	currentDir, err := os.Getwd()
-	configFilePath := currentDir + "/" + CONFIG_FILE_NAME
-	myConfig.Dict = make(map[string]string)
+	self.sign.Set()
+	defer func() {
+		if err := recover(); err != nil {
+			debug.PrintStack()
+			errorMsg := fmt.Sprintf("Occur FATAL error when read config (path=%v): %s", self.Path, err)
+			LogFatalln(errorMsg)
+		}
+		self.sign.Unset()
+	}()
+	needLoad := fresh || (self.loadingCount == 0)
+	if !needLoad {
+		return nil
+	}
+	var configFilePath string
+	if !strings.Contains(configFilePath, "/") {
+		currentDir, err := os.Getwd()
+		if err != nil {
+			panic(err)
+		}
+		configFilePath = currentDir + "/" + self.Path
+	} else {
+		configFilePath = self.Path
+	}
+	if self.Dict == nil {
+		self.Dict = make(map[string]string)
+	}
 	configFile, err := os.OpenFile(configFilePath, os.O_RDONLY, 0666)
 	if err != nil {
 		switch err.(type) {
@@ -51,12 +56,12 @@ func ReadConfig(fresh bool) (Config, error) {
 			warningBuffer.WriteString(configFilePath)
 			warningBuffer.WriteString("' is NOT FOUND! ")
 			warningBuffer.WriteString("Use DEFAULT config '")
-			warningBuffer.WriteString(fmt.Sprintf("%v", myConfig))
+			warningBuffer.WriteString(fmt.Sprintf("%v", self.Dict))
 			warningBuffer.WriteString("'. ")
 			LogWarnln(warningBuffer.String())
-			return myConfig, nil
+			return nil
 		default:
-			return myConfig, err
+			panic(err)
 		}
 	}
 	defer configFile.Close()
@@ -68,7 +73,7 @@ func ReadConfig(fresh bool) (Config, error) {
 				// The file end is touched.
 				break
 			} else {
-				return myConfig, err
+				panic(err)
 			}
 		}
 		str = strings.TrimRight(str, "\r\n")
@@ -81,9 +86,8 @@ func ReadConfig(fresh bool) (Config, error) {
 		}
 		key := strings.ToLower(str[0:sepIndex])
 		value := str[sepIndex+1 : len(str)]
-		myConfig.Dict[key] = value
+		self.Dict[key] = value
 	}
-	loadingChan <- 1
-	LogInfof("Loaded config file (count=%d): %v\n", loadingCount, myConfig)
-	return myConfig, nil
+	LogInfof("Loaded config file (count=%d).", self.loadingCount)
+	return nil
 }
