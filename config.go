@@ -3,7 +3,6 @@ package go_lib
 import (
 	"bufio"
 	"bytes"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -29,9 +28,7 @@ func (self *Config) ReadConfig(fresh bool) error {
 			debug.PrintStack()
 			errorMsg := fmt.Sprintf("Occur FATAL error when read config (path=%v): %s", self.Path, err)
 			LogFatalln(errorMsg)
-			return errors.New(errorMsg)
 		}
-
 	}()
 	needLoad := fresh || (self.loadingCount == 0)
 	if !needLoad {
