@@ -48,10 +48,10 @@ func getInvokerLocation(skipNumber int) string {
 
 func generateLogContent(
 	logTag LogTag,
-	callMidHierarchy uint,
+	invokeGapNumber uint,
 	format string,
 	v ...interface{}) string {
-	skipNumber := int(callMidHierarchy) + 2
+	skipNumber := int(invokeGapNumber) + 2
 	baseInfo :=
 		fmt.Sprintf("%s %s - ", logTag.Prefix(), getInvokerLocation(skipNumber))
 	var result string
@@ -70,7 +70,7 @@ func generateLogContent(
 }
 
 func GetSimpleLogger() Logger {
-	return GetLogger([]Logger{&ConsoleLogger{}})
+	return GetLogger([]Logger{&ConsoleLogger{invokeNumber: 2}})
 }
 
 func GetLogger(loggers []Logger) Logger {
