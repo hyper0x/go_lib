@@ -1,7 +1,6 @@
 package pool
 
 import (
-	"go_lib."
 	"runtime/debug"
 	"testing"
 	"time"
@@ -25,8 +24,8 @@ func TestRedisCacheProviderSync(t *testing.T) {
 		t.FailNow()
 		return
 	}
-	go gettingLoop(pool, sign, 0)
-	go puttingLoop(pool, sign, 0)
+	go getFromLoop(pool, sign, 0)
+	go putToLoop(pool, sign, 0)
 	<-sign
 	<-sign
 }
@@ -47,8 +46,8 @@ func TestRedisCacheProviderAsync(t *testing.T) {
 		t.FailNow()
 		return
 	}
-	go gettingLoop(pool, sign, 100)
-	go puttingLoop(pool, sign, 100)
+	go getFromLoop(pool, sign, 100)
+	go putToLoop(pool, sign, 100)
 	<-sign
 	<-sign
 }
@@ -69,8 +68,8 @@ func BenchmarkRedisCacheProviderSync(b *testing.B) {
 		b.FailNow()
 		return
 	}
-	go gettingLoop(pool, sign, 0)
-	go puttingLoop(pool, sign, 0)
+	go getFromLoop(pool, sign, 0)
+	go putToLoop(pool, sign, 0)
 	<-sign
 	<-sign
 }
@@ -91,13 +90,13 @@ func BenchmarkRedisCacheProviderAsync(b *testing.B) {
 		b.FailNow()
 		return
 	}
-	go gettingLoop(pool, sign, 100)
-	go puttingLoop(pool, sign, 100)
+	go getFromLoop(pool, sign, 100)
+	go putToLoop(pool, sign, 100)
 	<-sign
 	<-sign
 }
 
-func gettingLoop(pool *Pool, sign chan bool, timeoutMs int) {
+func getFromLoop(pool *Pool, sign chan bool, timeoutMs int) {
 	result := false
 	for {
 		element, ok := pool.Get(time.Duration(timeoutMs))
@@ -116,11 +115,11 @@ func gettingLoop(pool *Pool, sign chan bool, timeoutMs int) {
 			break
 		}
 	}
-	go_lib.LogInfoln("Getting finish.")
+	logger.Infoln("Getting finish.")
 	sign <- result
 }
 
-func puttingLoop(pool *Pool, sign chan bool, timeoutMs int) {
+func putToLoop(pool *Pool, sign chan bool, timeoutMs int) {
 	result := false
 	for i := 0; i < 50; i++ {
 		element, _ := initFunc()
@@ -129,7 +128,7 @@ func puttingLoop(pool *Pool, sign chan bool, timeoutMs int) {
 		//		LogInfo(infoMsg)
 	}
 	pool.Close()
-	go_lib.LogInfoln("Putting finish.")
+	logger.Infoln("Putting finish.")
 	sign <- result
 }
 

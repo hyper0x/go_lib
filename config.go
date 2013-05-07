@@ -4,11 +4,14 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"go_lib/logging"
 	"io"
 	"os"
 	"runtime/debug"
 	"strings"
 )
+
+var logger logging.Logger = logging.GetSimpleLogger()
 
 type Config struct {
 	Path         string
@@ -27,7 +30,7 @@ func (self *Config) ReadConfig(fresh bool) error {
 		if err := recover(); err != nil {
 			debug.PrintStack()
 			errorMsg := fmt.Sprintf("Occur FATAL error when read config (path=%v): %s", self.Path, err)
-			LogFatalln(errorMsg)
+			logger.Fatalln(errorMsg)
 		}
 	}()
 	needLoad := fresh || (self.loadingCount == 0)
@@ -58,7 +61,7 @@ func (self *Config) ReadConfig(fresh bool) error {
 			warningBuffer.WriteString("Use DEFAULT config '")
 			warningBuffer.WriteString(fmt.Sprintf("%v", self.Dict))
 			warningBuffer.WriteString("'. ")
-			LogWarnln(warningBuffer.String())
+			logger.Warnln(warningBuffer.String())
 			return nil
 		default:
 			panic(err)
@@ -88,6 +91,6 @@ func (self *Config) ReadConfig(fresh bool) error {
 		value := str[sepIndex+1 : len(str)]
 		self.Dict[key] = value
 	}
-	LogInfof("Loaded config file (count=%d).", self.loadingCount)
+	logger.Infof("Loaded config file (count=%d).", self.loadingCount)
 	return nil
 }
