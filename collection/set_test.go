@@ -44,8 +44,8 @@ func TestSimpleSet(t *testing.T) {
 	}
 	t.Logf("Matrix Set: %v\n", matrixSet)
 	t.Logf("Matrix Set Length: %v\n", matrixSet.Len())
-	matrixArray := matrixSet.Array()
-	t.Logf("Matrix Sorted Array: %v\n", matrixArray)
+	matrixSlice := matrixSet.Slice()
+	t.Logf("Matrix Sorted Slice: %v\n", matrixSlice)
 	matrixIterator := matrixSet.Iterator()
 	var pe interface{}
 	for j := 0; j < matrixSet.Len(); j++ {
@@ -64,7 +64,7 @@ func TestSimpleSet(t *testing.T) {
 		}
 		pe = e
 	}
-	randElement := matrixArray[rand.Intn(len(matrixArray))]
+	randElement := matrixSlice[rand.Intn(len(matrixSlice))]
 	t.Logf("Rand Elements: %v\n", randElement)
 	if !matrixSet.Contain(randElement) {
 		t.Errorf("Error: The element '%v' shoud be in marix set '%v'.\n", randElement, matrixSet)

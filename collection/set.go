@@ -136,7 +136,7 @@ func (self *SimpleSet) Iterator() SimpleSetIterator {
 	self.initialize(false)
 	return func() SimpleSetIterator {
 		index := 0
-		snapshots := self.Array()
+		snapshots := self.Slice()
 		return func() (interface{}, bool) {
 			if index >= 0 && index < len(snapshots) {
 				element := snapshots[index]
@@ -148,7 +148,7 @@ func (self *SimpleSet) Iterator() SimpleSetIterator {
 	}()
 }
 
-func (self *SimpleSet) Array() []interface{} {
+func (self *SimpleSet) Slice() []interface{} {
 	if len(self.keys) == 0 {
 		return make([]interface{}, 0)
 	}
@@ -169,7 +169,7 @@ func (self *SimpleSet) Array() []interface{} {
 }
 
 func (self *SimpleSet) String() string {
-	return fmt.Sprintf("%v", self.Array())
+	return fmt.Sprintf("%v", self.Slice())
 }
 
 func (self *SimpleSet) Sortable() bool {
