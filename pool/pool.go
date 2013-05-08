@@ -20,7 +20,7 @@ type Pool struct {
 
 func (self *Pool) Init(initFunc InitFunc) error {
 	if cap(self.container) != self.Size {
-		logger.Infof("Initializing pool (Id=%v, Size=%v)...\n", self.Id, self.Size)
+		logger.Infof("Initializing pool (Id=%s, Size=%d)...\n", self.Id, self.Size)
 		self.container = make(chan interface{}, self.Size)
 	}
 	for i := 0; i < self.Size; i++ {
@@ -33,7 +33,7 @@ func (self *Pool) Init(initFunc InitFunc) error {
 		}
 		self.container <- element
 	}
-	logger.Infof("The pool (Id=%v, Size=%v) has been initialized.\n", self.Id, self.Size)
+	logger.Infof("The pool (Id=%v, Size=%d) has been initialized.\n", self.Id, self.Size)
 	return nil
 }
 
