@@ -4,92 +4,122 @@ type LogManager struct {
 	loggers []Logger
 }
 
-func (self *LogManager) Error(v ...interface{}) {
+func (self *LogManager) Error(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Error(v)
+		content = logger.Error(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Errorf(format string, v ...interface{}) {
+func (self *LogManager) Errorf(format string, v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Errorf(format, v)
+		content = logger.Errorf(format, v...)
 	}
+	return content
 }
 
-func (self *LogManager) Errorln(v ...interface{}) {
+func (self *LogManager) Errorln(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Errorln(v)
+		content = logger.Errorln(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Fatal(v ...interface{}) {
+func (self *LogManager) Fatal(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Fatal(v)
+		content = logger.Fatal(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Fatalf(format string, v ...interface{}) {
+func (self *LogManager) Fatalf(format string, v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Fatalf(format, v)
+		content = logger.Fatalf(format, v...)
 	}
+	return content
 }
 
-func (self *LogManager) Fatalln(v ...interface{}) {
+func (self *LogManager) Fatalln(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Fatalln(v)
+		content = logger.Fatalln(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Info(v ...interface{}) {
+func (self *LogManager) Info(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Info(v)
+		content = logger.Info(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Infof(format string, v ...interface{}) {
+func (self *LogManager) Infof(format string, v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Infof(format, v)
+		content = logger.Infof(format, v...)
 	}
+	return content
 }
 
-func (self *LogManager) Infoln(v ...interface{}) {
+func (self *LogManager) Infoln(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Infoln(v)
+		content = logger.Infoln(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Panic(v ...interface{}) {
+func (self *LogManager) Panic(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Panic(v)
+		content = logger.Panic(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Panicf(format string, v ...interface{}) {
+func (self *LogManager) Panicf(format string, v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Panicf(format, v)
+		content = logger.Panicf(format, v...)
 	}
+	return content
 }
 
-func (self *LogManager) Panicln(v ...interface{}) {
+func (self *LogManager) Panicln(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Panicln(v)
+		content = logger.Panicln(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Warn(v ...interface{}) {
+func (self *LogManager) Warn(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Warn(v)
+		content = logger.Warn(v...)
 	}
+	return content
 }
 
-func (self *LogManager) Warnf(format string, v ...interface{}) {
+func (self *LogManager) Warnf(format string, v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Warnf(format, v)
+		content = logger.Warnf(format, v...)
 	}
+	return content
 }
 
-func (self *LogManager) Warnln(v ...interface{}) {
+func (self *LogManager) Warnln(v ...interface{}) string {
+	var content string
 	for _, logger := range self.loggers {
-		logger.Warnln(v)
+		content = logger.Warnln(v...)
 	}
+	return content
 }

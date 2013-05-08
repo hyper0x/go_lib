@@ -12,21 +12,21 @@ func init() {
 }
 
 type Logger interface {
-	Error(v ...interface{})
-	Errorf(format string, v ...interface{})
-	Errorln(v ...interface{})
-	Fatal(v ...interface{})
-	Fatalf(format string, v ...interface{})
-	Fatalln(v ...interface{})
-	Info(v ...interface{})
-	Infof(format string, v ...interface{})
-	Infoln(v ...interface{})
-	Panic(v ...interface{})
-	Panicf(format string, v ...interface{})
-	Panicln(v ...interface{})
-	Warn(v ...interface{})
-	Warnf(format string, v ...interface{})
-	Warnln(v ...interface{})
+	Error(v ...interface{}) string
+	Errorf(format string, v ...interface{}) string
+	Errorln(v ...interface{}) string
+	Fatal(v ...interface{}) string
+	Fatalf(format string, v ...interface{}) string
+	Fatalln(v ...interface{}) string
+	Info(v ...interface{}) string
+	Infof(format string, v ...interface{}) string
+	Infoln(v ...interface{}) string
+	Panic(v ...interface{}) string
+	Panicf(format string, v ...interface{}) string
+	Panicln(v ...interface{}) string
+	Warn(v ...interface{}) string
+	Warnf(format string, v ...interface{}) string
+	Warnln(v ...interface{}) string
 }
 
 func getInvokerLocation(skipNumber int) string {
@@ -48,15 +48,15 @@ func getInvokerLocation(skipNumber int) string {
 
 func generateLogContent(
 	logTag LogTag,
-	invokeGapNumber uint,
+	invokingGapNumber uint,
 	format string,
 	v ...interface{}) string {
-	skipNumber := int(invokeGapNumber) + 2
+	skipNumber := int(invokingGapNumber) + 2
 	baseInfo :=
 		fmt.Sprintf("%s %s - ", logTag.Prefix(), getInvokerLocation(skipNumber))
 	var result string
 	if len(format) > 0 {
-		result = fmt.Sprintf((baseInfo + format), v)
+		result = fmt.Sprintf((baseInfo + format), v...)
 	} else {
 		vLen := len(v)
 		params := make([]interface{}, (vLen + 1))
@@ -70,7 +70,7 @@ func generateLogContent(
 }
 
 func GetSimpleLogger() Logger {
-	return GetLogger([]Logger{&ConsoleLogger{invokeNumber: 2}})
+	return GetLogger([]Logger{&ConsoleLogger{invokingNumber: 2}})
 }
 
 func GetLogger(loggers []Logger) Logger {

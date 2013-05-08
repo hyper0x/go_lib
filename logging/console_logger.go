@@ -5,92 +5,107 @@ import (
 )
 
 type ConsoleLogger struct {
-	invokeNumber uint
+	invokingNumber uint
 }
 
-func (logger *ConsoleLogger) SetInvokeNumber(invokeNumber uint) {
-	logger.invokeNumber = invokeNumber
+func (logger *ConsoleLogger) getInvokingNumber() uint {
+	return logger.invokingNumber
 }
 
-func (logger *ConsoleLogger) getInvokeNumber() uint {
-	return logger.invokeNumber
+func (logger *ConsoleLogger) SetInvokingNumber(invokingNumber uint) {
+	logger.invokingNumber = invokingNumber
 }
 
-func (logger *ConsoleLogger) SetDefaultInvokeNumber() {
-	logger.invokeNumber = 1
+func (logger *ConsoleLogger) SetDefaultInvokingNumber() {
+	logger.invokingNumber = 1
 }
 
-func (logger *ConsoleLogger) Error(v ...interface{}) {
-	content := generateLogContent(getErrorLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Error(v ...interface{}) string {
+	content := generateLogContent(getErrorLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Errorf(format string, v ...interface{}) {
-	content := generateLogContent(getErrorLogTag(), logger.getInvokeNumber(), format, v)
+func (logger *ConsoleLogger) Errorf(format string, v ...interface{}) string {
+	content := generateLogContent(getErrorLogTag(), logger.getInvokingNumber(), format, v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Errorln(v ...interface{}) {
-	content := generateLogContent(getErrorLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Errorln(v ...interface{}) string {
+	content := generateLogContent(getErrorLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Println(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Fatal(v ...interface{}) {
-	content := generateLogContent(getFatalLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Fatal(v ...interface{}) string {
+	content := generateLogContent(getFatalLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Fatalf(format string, v ...interface{}) {
-	content := generateLogContent(getFatalLogTag(), logger.getInvokeNumber(), format, v)
+func (logger *ConsoleLogger) Fatalf(format string, v ...interface{}) string {
+	content := generateLogContent(getFatalLogTag(), logger.getInvokingNumber(), format, v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Fatalln(v ...interface{}) {
-	content := generateLogContent(getFatalLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Fatalln(v ...interface{}) string {
+	content := generateLogContent(getFatalLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Println(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Info(v ...interface{}) {
-	content := generateLogContent(getInfoLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Info(v ...interface{}) string {
+	content := generateLogContent(getInfoLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Infof(format string, v ...interface{}) {
-	content := generateLogContent(getInfoLogTag(), logger.getInvokeNumber(), format, v)
+func (logger *ConsoleLogger) Infof(format string, v ...interface{}) string {
+	content := generateLogContent(getInfoLogTag(), logger.getInvokingNumber(), format, v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Infoln(v ...interface{}) {
-	content := generateLogContent(getInfoLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Infoln(v ...interface{}) string {
+	content := generateLogContent(getInfoLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Println(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Panic(v ...interface{}) {
-	content := generateLogContent(getPanicLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Panic(v ...interface{}) string {
+	content := generateLogContent(getPanicLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Panicf(format string, v ...interface{}) {
-	content := generateLogContent(getPanicLogTag(), logger.getInvokeNumber(), format, v)
+func (logger *ConsoleLogger) Panicf(format string, v ...interface{}) string {
+	content := generateLogContent(getPanicLogTag(), logger.getInvokingNumber(), format, v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Panicln(v ...interface{}) {
-	content := generateLogContent(getPanicLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Panicln(v ...interface{}) string {
+	content := generateLogContent(getPanicLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Println(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Warn(v ...interface{}) {
-	content := generateLogContent(getWarnLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Warn(v ...interface{}) string {
+	content := generateLogContent(getWarnLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Warnf(format string, v ...interface{}) {
-	content := generateLogContent(getWarnLogTag(), logger.getInvokeNumber(), format, v)
+func (logger *ConsoleLogger) Warnf(format string, v ...interface{}) string {
+	content := generateLogContent(getWarnLogTag(), logger.getInvokingNumber(), format, v...)
 	log.Print(content)
+	return content
 }
 
-func (logger *ConsoleLogger) Warnln(v ...interface{}) {
-	content := generateLogContent(getWarnLogTag(), logger.getInvokeNumber(), "", v)
+func (logger *ConsoleLogger) Warnln(v ...interface{}) string {
+	content := generateLogContent(getWarnLogTag(), logger.getInvokingNumber(), "", v...)
 	log.Println(content)
+	return content
 }
