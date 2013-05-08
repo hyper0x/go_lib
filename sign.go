@@ -2,7 +2,6 @@ package go_lib
 
 import (
 	"sync"
-	"sync/atomic"
 )
 
 type SignBase interface {
@@ -12,34 +11,47 @@ type SignBase interface {
 }
 
 type Sign struct {
-	count uint64
-	sign  chan uint64
+	count      int64
+	sign       *sync.Mutex
+	innerMutex *sync.Mutex
 }
 
 func (self *Sign) Set() {
 	if self.sign == nil {
-		self.sign = make(chan uint64, 1)
+		self.sign = new(sync.Mutex)
 	}
-	self.sign <- atomic.AddUint64(&self.count, uint64(1))
+	self.sign.Lock()
+	if self.innerMutex == nil {
+		self.innerMutex = new(sync.Mutex)
+	}
+	self.innerMutex.Lock()
+	self.count += 1
+	self.innerMutex.Unlock()
 }
 
 func (self *Sign) Unset() {
 	if self.sign == nil {
 		return
 	}
-	if len(self.sign) == 0 {
-		return
+	self.sign.Unlock()
+	if self.innerMutex == nil {
+		self.innerMutex = new(sync.Mutex)
 	}
-	<-self.sign
+	self.innerMutex.Lock()
+	if self.count > 0 {
+		self.count -= 1
+	}
+	self.innerMutex.Unlock()
 }
 
 func (self *Sign) GetCount() uint64 {
-	return self.count
+	return uint64(self.count)
 }
 
 type RWSign struct {
-	count uint64
-	sign  *sync.RWMutex
+	count      int64
+	sign       *sync.RWMutex
+	innerMutex *sync.Mutex
 }
 
 func (self *RWSign) Set() {
@@ -47,7 +59,12 @@ func (self *RWSign) Set() {
 		self.sign = new(sync.RWMutex)
 	}
 	self.sign.Lock()
-	atomic.AddUint64(&self.count, uint64(1))
+	if self.innerMutex == nil {
+		self.innerMutex = new(sync.Mutex)
+	}
+	self.innerMutex.Lock()
+	self.count += 1
+	self.innerMutex.Unlock()
 }
 
 func (self *RWSign) Unset() {
@@ -55,10 +72,18 @@ func (self *RWSign) Unset() {
 		return
 	}
 	self.sign.Unlock()
+	if self.innerMutex == nil {
+		self.innerMutex = new(sync.Mutex)
+	}
+	self.innerMutex.Lock()
+	if self.count > 0 {
+		self.count -= 1
+	}
+	self.innerMutex.Unlock()
 }
 
 func (self *RWSign) GetCount() uint64 {
-	return self.count
+	return uint64(self.count)
 }
 
 func (self *RWSign) RSet() {
