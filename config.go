@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"go_lib/logging"
+	"github.com/go_lib/logging"
 	"io"
 	"os"
 	"runtime/debug"
