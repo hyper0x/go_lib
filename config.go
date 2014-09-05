@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/hyper-carrot/go_lib/logging"
+	"go_lib/logging"
 	"io"
 	"os"
 	"runtime/debug"
