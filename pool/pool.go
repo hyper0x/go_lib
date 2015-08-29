@@ -1,10 +1,11 @@
 package pool
 
 import (
-	"go_lib"
-	"go_lib/logging"
 	"runtime"
 	"time"
+
+	"github.com/hyper-carrot/go_lib"
+	"github.com/hyper-carrot/go_lib/logging"
 )
 
 var logger logging.Logger = logging.GetSimpleLogger()

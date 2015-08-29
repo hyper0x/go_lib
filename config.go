@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"go_lib/logging"
 	"io"
 	"os"
 	"runtime/debug"
 	"strings"
+
+	"github.com/hyper-carrot/go_lib/logging"
 )
 
 var logger logging.Logger = logging.GetSimpleLogger()
